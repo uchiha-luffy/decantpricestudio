@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decant Price Calculator by Zero Scent</title>
+<style>
+:root{--bg:#f6f4f0;--card:#fff;--ink:#20211f;--muted:#777970;--line:#e7e4dd;--accent:#334b3f;--accent2:#e9efe9;--gold:#c49a52;--danger:#a94442}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:#202d26;color:#fff;padding:30px 20px 26px;border-bottom:4px solid var(--gold)}.wrap{max-width:1600px;margin:auto;padding:0 20px}
+.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:#d7c39e;font-weight:700}h1{font-size:clamp(27px,4vw,40px);line-height:1.1;margin:8px 0}header p{margin:8px 0 0;color:#d8dfd9;max-width:650px}
+main{padding:24px 0 48px}.layout{display:grid;grid-template-columns:minmax(300px,350px) minmax(0,1fr);gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:0 5px 20px #28251b08}.card h2{font-size:17px;margin:0 0 4px}.sub{font-size:12px;color:var(--muted);margin:0 0 18px}
+label{display:block;font-size:12px;font-weight:700;color:#4f524c;margin:0 0 6px}input,select{width:100%;border:1px solid #dcdad2;border-radius:9px;padding:8px 9px;background:#fff;color:var(--ink);font:inherit;min-width:0}input:focus,select:focus{outline:2px solid #a7b8a9;border-color:var(--accent)}
+.field{margin-bottom:8px}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.section-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800;border-top:1px solid var(--line);padding-top:10px;margin:12px 0 8px}
+.bottle-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.bottle-grid .field{margin:0}.hint{font-size:11px;color:var(--muted);margin-top:5px}
+button{border:0;border-radius:10px;padding:11px 14px;font:700 13px inherit;cursor:pointer;transition:.15s}button:hover{filter:brightness(.96);transform:translateY(-1px)}.primary{background:var(--accent);color:white;width:100%;margin-top:7px}.secondary{background:var(--accent2);color:var(--accent)}.ghost{background:#f4f2ed;color:#555}.danger{background:#fff0ef;color:var(--danger)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.toolbar h2{margin:0}.toolbar p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:15px}.stat{padding:13px;border:1px solid var(--line);border-radius:12px;background:#fbfaf7}.stat span{display:block;color:var(--muted);font-size:11px}.stat strong{font-size:20px;display:block;margin-top:3px}
+.results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.decant{border:1px solid var(--line);border-radius:13px;padding:14px;min-width:0}.decant-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.size{font-size:14px;font-weight:800}.pill{font-size:10px;background:var(--accent2);color:var(--accent);border-radius:30px;padding:4px 7px;font-weight:800}.price{font-size:27px;font-weight:800;letter-spacing:-.04em;margin:9px 0 2px}.price small{font-size:12px;letter-spacing:0;color:var(--muted);font-weight:500}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px;padding-top:10px;border-top:1px solid var(--line)}.metric span{display:block;font-size:10px;color:var(--muted)}.metric strong{font-size:13px}.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #d4d0c5;border-radius:12px;grid-column:1/-1}
+.saved{margin-top:20px}.saved-list{display:grid;gap:8px}.saved-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:11px}.saved-item strong{display:block}.saved-item small{color:var(--muted)}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{padding:8px 10px;font-size:11px}
+.note{background:#f5f2e9;border-radius:10px;padding:12px;font-size:12px;color:#5f5a4e;margin-top:14px}.foot{font-size:11px;color:var(--muted);margin-top:18px}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.results{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){.results{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:460px){.results{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}.card{padding:16px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">Fragrance business toolkit by Zero Scent</div><h1>Decant Price Calculator</h1><p>Turn full-bottle costs into clear, consistent decant prices — including atomizer and packaging cost and estimated profit.</p></div></header>
+<main class="wrap">
+<div class="layout">
+<section class="card">
+<h2>Perfume details</h2><p class="sub">Enter the full bottle's costs and your decant bottle prices.</p>
+<form id="perfumeForm">
+<div class="field"><label for="name">Perfume / fragrance name</label><input id="name" placeholder="e.g. Dior Sauvage EDP" required></div>
+<div class="two">
+<div class="field"><label for="volume">Full bottle volume (ml)</label><input id="volume" type="number" min="1" step="0.1" value="100" required><div class="hint">Enter the perfume bottle size, e.g. 75, 100, 125, 150 or 200 ml.</div></div>
+<div class="field"><label for="currency">Currency</label><select id="currency"><option value="৳">৳ BDT</option><option value="$">$ USD</option><option value="€">€ EUR</option><option value="£">£ GBP</option><option value="₹">₹ INR</option><option value="د.إ">د.إ AED</option></select></div>
+</div>
+<div class="two">
+<div class="field"><label for="buy">Buying price</label><input id="buy" type="number" min="0" step="0.01" placeholder="e.g. 8500" required></div>
+<div class="field"><label for="targetProfit">Target profit on full bottle</label><input id="targetProfit" type="number" min="0" step="0.01" placeholder="e.g. 2000" value="0" required><div class="hint">Your desired profit amount, before other expenses.</div></div>
+</div>
+<div class="section-label">Empty decant bottle cost</div>
+<p class="hint" style="margin:-6px 0 12px">Cost of the empty atomizer for each size (not the perfume).</p>
+<div class="bottle-grid" id="bottleFields"></div>
+<div class="section-label">Decant sizes</div>
+<p class="hint" style="margin:-6px 0 12px">Prices are calculated for 3, 5, 6, 10, 15, 30 and 50 ml decants, using the full bottle volume above to calculate the perfume cost per ml.</p>
+<div class="section-label">Additional packaging cost</div>
+<div class="field"><label for="packaging">Packaging cost per decant</label><input id="packaging" type="number" min="0" step="0.01" value="0" placeholder="e.g. 10"><div class="hint">Boxes, labels, wrapping, stickers, and other packaging per decant.</div></div>
+<div class="note"><strong>Pricing formulas used</strong>
+<div style="margin-top:7px">1. Full-bottle selling price = buying price + target profit</div>
+<div>2. Retail value per ml = full-bottle selling price ÷ full-bottle volume</div>
+<div>3. Decant price = (retail value per ml × decant size) + empty bottle cost + packaging cost</div>
+<div>4. Estimated decant profit = rounded selling price − perfume cost − empty bottle cost − packaging cost</div>
+<div class="hint">Suggested prices are rounded up to the next whole currency unit.</div></div>
+<div class="hint" style="margin:6px 0 10px">Prices update automatically as you type.</div>
+<button class="secondary" type="button" id="clearForm" style="width:100%;margin-top:8px">Clear inputs</button>
+</form>
+<div class="note"><strong>Default formula</strong><br>Suggested price = (full-bottle selling price ÷ bottle ml × decant ml) + empty decant bottle cost. This keeps the perfume's per-ml selling rate consistent and adds packaging.</div>
+</section>
+<section>
+<div class="card">
+<div class="toolbar"><div><h2 id="resultTitle">Your decant price list</h2><p id="resultSub">Enter details and calculate to see prices.</p></div><div class="actions"><button class="secondary" id="copyBtn" type="button">Copy price list</button><button class="secondary" id="csvBtn" type="button">Export CSV</button></div></div>
+<div class="stats"><div class="stat"><span>Calculated full-bottle selling price</span><strong id="fullSell">—</strong></div><div class="stat"><span>Target full-bottle profit</span><strong id="fullProfit">—</strong></div><div class="stat"><span>Retail price per ml</span><strong id="perMl">—</strong></div></div><div class="hint" id="sizeCount" style="margin:0 0 12px">Decant sizes priced: —</div>
+<div class="results" id="results"><div class="empty">Your calculated prices will appear here.</div></div>
+<p class="foot">Prices are rounded up to the next whole currency unit. Estimates exclude labels, spillage, shipping, platform fees, taxes and other overheads. Adjust prices for your market.</p>
+</div>
+<div class="card saved"><div class="toolbar"><div><h2>Saved perfumes</h2><p>Your saved price lists stay in this browser on this device.</p></div><button class="primary" id="saveBtn" type="button" style="width:auto;margin:0">Save current perfume</button></div><div id="savedList" class="saved-list"><div class="empty">No saved perfumes yet.</div></div></div>
+</section>
+</div></main>
+<script>
+const sizes=[3,5,6,10,15,30,50];
+const $=id=>document.getElementById(id);
+const bottleFields=$('bottleFields');
+sizes.forEach(s=>{const d=document.createElement('div');d.className='field';d.innerHTML=`<label for="b${s}">${s} ml bottle cost</label><input id="b${s}" type="number" min="0" step="0.01" value="0" aria-label="${s} ml empty bottle cost">`;bottleFields.appendChild(d)});
+let current=null;
+const fmt=(n,c=$('currency').value)=>c+Number(n).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2});
+const num=id=>Number($(id).value);
+function collect(showErrors=false){
+ const name=$('name').value.trim(), volume=num('volume'), buy=num('buy'), targetProfit=num('targetProfit'), sell=buy+targetProfit, currency=$('currency').value;
+ if(!name||!(volume>0)||$('buy').value===''||$('targetProfit').value===''||buy<0||targetProfit<0) {
+   if(showErrors) alert('Please enter a perfume name, a valid bottle volume, buying price and target profit.');
+   return null;
+ }
+ const method='retail', markup=0, packaging=Math.max(0,num('packaging')||0);
+ const bottleCosts={};sizes.forEach(s=>bottleCosts[s]=Math.max(0,num('b'+s)||0));
+ const retailPerMl=sell/volume, costPerMl=buy/volume;
+ const decants=sizes.map(size=>{
+  const bottle=bottleCosts[size], liquidCost=costPerMl*size;
+  const raw=retailPerMl*size+bottle+packaging;
+  const price=Math.ceil(raw);
+  return {size,bottle,packaging,liquidCost,raw,price,totalCost:liquidCost+bottle+packaging,profit:price-liquidCost-bottle-packaging,margin:price>0?(price-liquidCost-bottle-packaging)/price*100:0,available:size<=volume};
+ });
+ return {name,volume,buy,targetProfit,sell,currency,method,markup,packaging,bottleCosts,retailPerMl,costPerMl,decants,fullProfit:targetProfit};
+}
+function render(data){
+ current=data;$('resultTitle').textContent=data.name+' — decant prices';$('resultSub').textContent=`${data.volume} ml bottle · Buying ${fmt(data.buy,data.currency)} · Target profit ${fmt(data.targetProfit??data.fullProfit,data.currency)} · Selling ${fmt(data.sell,data.currency)}`;
+ $('fullSell').textContent=fmt(data.sell,data.currency);$('fullProfit').textContent=fmt(data.targetProfit??data.fullProfit,data.currency);$('perMl').textContent=fmt(data.retailPerMl,data.currency);$('sizeCount').textContent='Decant sizes priced: '+data.decants.filter(d=>d.available).length;
+ const root=$('results');root.innerHTML='';
+ data.decants.forEach(d=>{
+  const el=document.createElement('article');el.className='decant';
+  if(!d.available){el.innerHTML=`<div class="decant-top"><span class="size">${d.size} ml decant</span><span class="pill">TOO LARGE</span></div><p class="hint">This size exceeds your ${data.volume} ml full bottle.</p>`;root.appendChild(el);return;}
+  el.innerHTML=`<div class="decant-top"><span class="size">${d.size} ml decant</span><span class="pill">${data.method==='retail'?'RETAIL-BASED':'COST + MARKUP'}</span></div>
+  <div class="price">${fmt(d.price,data.currency)} <small>suggested price</small></div>
+  <div class="metrics"><div class="metric"><span>Perfume cost</span><strong>${fmt(d.liquidCost,data.currency)}</strong></div><div class="metric"><span>Empty bottle</span><strong>${fmt(d.bottle,data.currency)}</strong></div><div class="metric"><span>Packaging</span><strong>${fmt(d.packaging,data.currency)}</strong></div><div class="metric"><span>Total estimated cost</span><strong>${fmt(d.totalCost,data.currency)}</strong></div><div class="metric"><span>Estimated profit</span><strong>${fmt(d.profit,data.currency)} (${d.margin.toFixed(1)}%)</strong></div></div>`;
+  root.appendChild(el);
+ });
+}
+function refreshLive(){const d=collect(false);if(d){render(d)}else{current=null;$('fullSell').textContent=$('fullProfit').textContent=$('perMl').textContent='—';$('sizeCount').textContent='Enter perfume details to see prices update automatically.';$('resultTitle').textContent=$('name').value.trim()||'Your decant price list';$('resultSub').textContent='Complete the name, bottle volume, buying price and target profit.';$('results').innerHTML='<div class="empty">Prices will appear automatically when the required fields are filled.</div>';}}
+$('perfumeForm').addEventListener('submit',e=>e.preventDefault());
+$('perfumeForm').addEventListener('input',refreshLive);$('perfumeForm').addEventListener('change',refreshLive);
+$('currency').addEventListener('change',()=>{if(current){current.currency=$('currency').value;render(current)}});
+$('clearForm').addEventListener('click',()=>{$('perfumeForm').reset();sizes.forEach(s=>$('b'+s).value=0);$('volume').value=100;$('targetProfit').value=0;$('packaging').value=0;current=null;$('resultTitle').textContent='Your decant price list';$('resultSub').textContent='Enter details and calculate to see prices.';$('fullSell').textContent=$('fullProfit').textContent=$('perMl').textContent='—';$('sizeCount').textContent='Decant sizes priced: —';$('results').innerHTML='<div class="empty">Your calculated prices will appear here.</div>'});
+$('copyBtn').addEventListener('click',async()=>{if(!current){alert('Calculate a price list first.');return}const lines=[current.name,`Full bottle: ${current.volume} ml | Buy: ${fmt(current.buy,current.currency)} | Target profit: ${fmt(current.targetProfit??current.fullProfit,current.currency)} | Calculated sell: ${fmt(current.sell,current.currency)} | Packaging per decant: ${fmt(current.packaging,current.currency)}`,'',...current.decants.filter(d=>d.available).map(d=>`${d.size} ml: ${fmt(d.price,current.currency)} (estimated profit ${fmt(d.profit,current.currency)})`)];try{await navigator.clipboard.writeText(lines.join('\n'));$('copyBtn').textContent='Copied!';setTimeout(()=>$('copyBtn').textContent='Copy price list',1600)}catch(e){prompt('Copy your price list:',lines.join('\n'))}});
+$('csvBtn').addEventListener('click',()=>{if(!current){alert('Calculate a price list first.');return}const rows=[['Perfume',current.name],['Full bottle ml',current.volume],['Buying price',current.buy],['Target full-bottle profit',current.targetProfit??current.fullProfit],['Calculated full-bottle selling price',current.sell],['Packaging cost per decant',current.packaging],[],['Decant ml','Suggested price','Perfume cost','Bottle cost','Packaging cost','Total cost','Estimated profit','Margin %'],...current.decants.filter(d=>d.available).map(d=>[d.size,d.price,d.liquidCost,d.bottle,d.packaging,d.totalCost,d.profit,d.margin.toFixed(2)])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=(current.name.replace(/[^a-z0-9-_]+/gi,'_')||'decant-prices')+'.csv';a.click();URL.revokeObjectURL(a.href)});
+function getSaved(){try{return JSON.parse(localStorage.getItem('decantStudioSaved')||'[]')}catch(e){return []}}
+function setSaved(items){try{localStorage.setItem('decantStudioSaved',JSON.stringify(items))}catch(e){alert('Could not save in this browser. You can still export the price list as CSV.')}}
+function showSaved(){const root=$('savedList'),items=getSaved();root.innerHTML='';if(!items.length){root.innerHTML='<div class="empty">No saved perfumes yet.</div>';return}items.forEach((item,i)=>{const el=document.createElement('div');el.className='saved-item';const info=document.createElement('div');const strong=document.createElement('strong');strong.textContent=item.name;const small=document.createElement('small');small.textContent=`${item.volume} ml · Buy ${fmt(item.buy,item.currency)} · Sell ${fmt(item.sell,item.currency)}`;info.append(strong,small);const actions=document.createElement('div');actions.className='actions';const load=document.createElement('button');load.className='secondary';load.textContent='Load';load.onclick=()=>{ $('name').value=item.name;$('volume').value=item.volume;$('buy').value=item.buy;$('targetProfit').value=item.targetProfit??item.fullProfit??(item.sell-item.buy);$('currency').value=item.currency;$('packaging').value=item.packaging||0;sizes.forEach(s=>$('b'+s).value=item.bottleCosts[s]||0);render(item);window.scrollTo({top:0,behavior:'smooth'})};const del=document.createElement('button');del.className='danger';del.textContent='Delete';del.onclick=()=>{const arr=getSaved();arr.splice(i,1);setSaved(arr);showSaved()};actions.append(load,del);el.append(info,actions);root.appendChild(el)})}
+$('saveBtn').addEventListener('click',()=>{if(!current){alert('Calculate a price list first.');return}const items=getSaved();const idx=items.findIndex(x=>x.name.toLowerCase()===current.name.toLowerCase());if(idx>=0)items[idx]=current;else items.unshift(current);setSaved(items);showSaved();$('saveBtn').textContent='Saved!';setTimeout(()=>$('saveBtn').textContent='Save current perfume',1400)});
+showSaved();
+</script>
+</body></html>
